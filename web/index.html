@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#182522">
+  <title>SignalDesk — Security workspace</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <section id="login-view" class="login-shell">
+    <aside class="login-story">
+      <a class="brand" href="/" aria-label="SignalDesk home"><span class="brand-mark">S</span> SignalDesk</a>
+      <div class="story-copy"><p class="eyebrow">ONE CONNECTED PICTURE</p><h1>Follow the signal.<br>See the story.</h1><p>Identity, endpoint and cloud activity. One workspace for the decisions that matter.</p></div>
+      <div class="signal-art" aria-hidden="true"><span></span><span></span><span></span><i></i><b>IDENTITY / ENDPOINT / CLOUD</b></div>
+      <p class="story-footer">SECURITY OPERATIONS, IN CONTEXT.</p>
+    </aside>
+    <main class="login-form-wrap">
+      <form id="login-form" class="login-form">
+        <p class="eyebrow">YOUR SECURITY WORKSPACE</p><h2>Welcome back.</h2><p class="muted">Sign in to your organization.</p>
+        <label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="username" placeholder="analyst@acme.local" required maxlength="254">
+        <label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required maxlength="72">
+        <p id="login-error" class="form-error" role="alert"></p>
+        <button type="submit" class="button primary">Open workspace <span aria-hidden="true">↗</span></button>
+        <p class="login-note">Organization access is determined by your account.</p>
+      </form>
+    </main>
+  </section>
+
+  <div id="app-view" class="app-shell" hidden>
+    <aside class="sidebar">
+      <a class="brand" href="/"><span class="brand-mark">S</span> SignalDesk</a>
+      <div class="org-block"><span class="eyebrow">ORGANIZATION</span><strong id="tenant-name"></strong><span id="role-badge" class="role-tag"></span></div>
+      <nav aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview"><span aria-hidden="true">◫</span> Overview</button>
+        <button class="nav-item" data-view="events" id="events-nav"><span aria-hidden="true">⌕</span> Event explorer</button>
+        <button class="nav-item" data-view="investigations"><span aria-hidden="true">▤</span> Investigations</button>
+        <button class="nav-item mobile-signout" id="logout-mobile">Sign out ↗</button>
+      </nav>
+      <div class="sidebar-bottom"><span class="eyebrow">SIGNED IN AS</span><strong id="account-name"></strong><span id="account-email"></span><button id="logout" class="logout-button">Sign out ↗</button></div>
+    </aside>
+    <main class="main-panel">
+      <header class="page-header"><div><p class="eyebrow">SECURITY OPERATIONS / <span id="section-label">OVERVIEW</span></p><h1 id="page-title">Your security, connected.</h1></div><div class="header-controls"><label for="time-range" class="sr-only">Time range</label><select id="time-range"><option value="1">Last hour</option><option value="24" selected>Last 24 hours</option><option value="72">Last 72 hours</option></select><button id="refresh" class="button secondary">↻ Refresh</button></div></header>
+      <div id="app-error" class="notice error" role="alert" hidden></div>
+      <section id="overview-view">
+        <div class="section-intro"><p>A unified view across identity, endpoints and cloud.</p><span class="mono" id="freshness">Loading index status…</span></div>
+        <div id="metrics" class="metric-grid" aria-live="polite"></div>
+        <div class="workspace-heading"><div><p class="eyebrow">BUILT AROUND YOUR ROLE</p><h2>Workspace</h2></div><div id="workspace-controls" class="actions"><button id="add-widget" class="button secondary">+ Add widget</button><button id="save-workspace" class="button primary">Save layout</button></div></div>
+        <form id="widget-form" class="widget-form" hidden><label>Widget<select id="widget-type"></select></label><label id="widget-config-label">Entity / domain<input id="widget-config" maxlength="200" placeholder="Entity ID or optional domain"></label><button class="button primary" type="submit">Add</button><button id="cancel-widget" class="button secondary" type="button">Cancel</button></form>
+        <div id="widgets" class="widget-grid"></div>
+      </section>
+      <section id="events-view" hidden>
+        <form id="search-form" class="search-toolbar"><label class="search-field"><span class="sr-only">Search events</span><input id="search-query" placeholder="Search messages, actors, assets…" maxlength="200"></label><label><span class="sr-only">Domain</span><select id="search-domain"><option value="">All domains</option><option>identity</option><option>endpoint</option><option>cloud</option></select></label><label><span class="sr-only">Severity</span><select id="search-severity"><option value="">All severities</option><option>critical</option><option>high</option><option>medium</option><option>low</option><option>info</option></select></label><button type="submit" class="button primary">Search</button></form>
+        <div class="panel"><div class="panel-heading"><h2>Event stream</h2><span id="search-status" class="mono"></span></div><div id="event-results"></div><div class="pagination"><span id="result-count"></span><div class="actions"><button id="previous-page" class="button secondary">← Previous</button><button id="next-page" class="button secondary">Next →</button></div></div></div>
+      </section>
+      <section id="investigations-view" hidden><div class="section-intro"><p>Saved context for your team's next move.</p><span class="mono">SHARED WITH YOUR ORGANIZATION</span></div><div id="investigation-list" class="investigation-grid"></div></section>
+      <footer class="app-footer"><span>SignalDesk / Unified security workspace</span><span>All timestamps in UTC · Asynchronous event projections</span></footer>
+    </main>
+  </div>
+
+  <dialog id="timeline-dialog" class="timeline-dialog" aria-labelledby="timeline-title">
+    <div class="drawer-header"><div><p class="eyebrow">CROSS-DOMAIN INVESTIGATION</p><h2 id="timeline-title">Entity timeline</h2></div><button id="close-timeline" class="icon-button" aria-label="Close timeline">×</button></div>
+    <div id="timeline-content" class="drawer-body"></div>
+  </dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

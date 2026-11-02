@@ -1,0 +1,31 @@
+# Local planning/context
+PLAN.md
+plan.md
+Plan.md
+AGENTS.md
+agents.md
+Agents.md
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Build and tool output
+/bin/
+/dist/
+/coverage/
+/work/
+*.out
+*.log
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

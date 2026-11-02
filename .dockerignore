@@ -1,0 +1,10 @@
+.git
+.env
+.env.*
+PLAN.md
+AGENTS.md
+work
+bin
+__pycache__
+.venv
+*.log

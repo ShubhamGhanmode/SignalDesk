@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: timeline-worker}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: timeline-worker}}
+  template:
+    metadata:
+      labels: {app: timeline-worker}
+      annotations: {prometheus.io/scrape: "true", prometheus.io/port: "8080", prometheus.io/path: /metrics}
+    spec:
+      terminationGracePeriodSeconds: 30
+      securityContext: {runAsNonRoot: true, runAsUser: 10001, seccompProfile: {type: RuntimeDefault}}
+      containers:
+        - name: worker
+          image: signaldesk:local
+          args: [worker, timeline]
+          envFrom: [{configMapRef: {name: signaldesk-config}}]
+          ports: [{containerPort: 8080}]
+          securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: [ALL]}}
+          resources: {requests: {cpu: 100m, memory: 128Mi}, limits: {cpu: "1", memory: 512Mi}}
+          livenessProbe: {httpGet: {path: /healthz, port: 8080}, initialDelaySeconds: 20, periodSeconds: 20}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: search-worker}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: search-worker}}
+  template:
+    metadata:
+      labels: {app: search-worker}
+      annotations: {prometheus.io/scrape: "true", prometheus.io/port: "8080", prometheus.io/path: /metrics}
+    spec:
+      terminationGracePeriodSeconds: 30
+      securityContext: {runAsNonRoot: true, runAsUser: 10001, seccompProfile: {type: RuntimeDefault}}
+      containers:
+        - name: worker
+          image: signaldesk:local
+          args: [worker, search]
+          envFrom: [{configMapRef: {name: signaldesk-config}}]
+          ports: [{containerPort: 8080}]
+          securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: [ALL]}}
+          resources: {requests: {cpu: 100m, memory: 128Mi}, limits: {cpu: "1", memory: 512Mi}}
+          livenessProbe: {httpGet: {path: /healthz, port: 8080}, initialDelaySeconds: 10, periodSeconds: 20}

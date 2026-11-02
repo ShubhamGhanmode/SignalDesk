@@ -1,0 +1,6 @@
+cluster.name: signaldesk
+node.name: signaldesk-search
+network.host: 0.0.0.0
+discovery.type: single-node
+plugins.security.disabled: true
+node.store.allow_mmap: false

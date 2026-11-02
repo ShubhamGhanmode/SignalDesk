@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: signaldesk
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - dependencies
+  - apps
+  - init-job.yaml
+# Replace newName/newTag with your published image repositories and tag.
+images:
+  - name: signaldesk
+    newName: signaldesk
+    newTag: local
+  - name: signaldesk-brief
+    newName: signaldesk-brief
+    newTag: local
